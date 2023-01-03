@@ -8,4 +8,33 @@ use Illuminate\Database\Eloquent\Model;
 class Etudiant extends Model
 {
     use HasFactory;
+
+    protected $table = 'etudiants';
+
+    /**
+     * The database primary key value.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * Attributes that should be mass-assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['nom', 'prenom', 'ville', 'telephone', 'photo', 'contact_parent', 'nom_parent', 'ville_provenance', 'niveau_etude', 'sexe', 'age', 'description', 'formation_professionnelle', 'formation_id', 'tranche_id', 'classe_id'];
+
+    public function classe()
+    {
+        return $this->belongsTo('App\Models\Klasse', 'classe_id');
+    }
+    public function tranche()
+    {
+        return $this->belongsTo('App\Models\Tranche', 'tranche_id');
+    }
+    public function formation()
+    {
+        return $this->belongsTo('App\Models\Klasse', 'formation_id');
+    }
 }

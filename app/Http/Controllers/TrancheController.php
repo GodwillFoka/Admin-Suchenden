@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Formation;
+use App\Models\Tranche;
 use Illuminate\Http\Request;
 
-class FormationController extends Controller
+class TrancheController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,13 +18,13 @@ class FormationController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $formation = Formation::where('nom', 'LIKE', "%$keyword%")
+            $tranche = Tranche::where('montant', 'LIKE', "%$keyword%")
                 ->orWhere('description', 'LIKE', "%$keyword%")
                 ->latest()->paginate($perPage);
         } else {
-            $formation = Formation::latest()->paginate($perPage);
+            $tranche = Tranche::latest()->paginate($perPage);
         }
-        return view('admin.formation.index', compact('formation'));
+        return view('admin.tranche.index', compact('tranche'));
     }
 
     /**
@@ -34,7 +34,7 @@ class FormationController extends Controller
      */
     public function create()
     {
-        return view('admin.formation.create');
+        return view('admin.tranche.create');
     }
 
     /**
@@ -46,72 +46,71 @@ class FormationController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-			'nom' => 'required'
+			'nom' => 'required',
+			'montant' => 'required|min:1'
 		]);
         $requestData = $request->all();
+        Tranche::create($requestData);
 
-        Formation::create($requestData);
-
-        return redirect('admin/formation')->with('message', 'Vous avez ajouté une rentrée!');
+        return redirect('admin/tranche')->with('message', 'Vous avez ajouté une tranche!');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Formation  $formation
+     * @param  \App\Models\Tranche  $tranche
      * @return \Illuminate\Http\Response
      */
-    public function show(Formation $id)
+    public function show(Tranche $id)
     {
-        $formation = Formation::findOrFail($id);
+        $tranche = Tranche::findOrFail($id);
 
-        return view('admin.formation.show', compact('rent$formation'));
+        return view('admin.tranche.show', compact('$tranche'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Formation  $formation
+     * @param  \App\Models\Tranche  $tranche
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $formation = Formation::findOrFail($id);
+        $tranche = Tranche::findOrFail($id);
 
-        return view('admin.formation.edit', compact('formation'));
+        return view('admin.tranche.edit', compact('tranche'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Formation  $formation
+     * @param  \App\Models\Tranche  $tranche
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $this->validate($request, [
 			'nom' => 'required',
-			'description' => 'required'
+			'montant' => 'required|min:1'
 		]);
         $requestData = $request->all();
 
-        $formation = Formation::findOrFail($id);
-        $formation->update($requestData);
+        $tranche = Tranche::findOrFail($id);
+        $tranche->update($requestData);
 
-        return redirect('admin/formation')->with('message', 'Vous avez modifié la formation avec success!');
+        return redirect('admin/tranche')->with('message', 'Vous avez modifié la tranche avec success!');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Formation  $formation
+     * @param  \App\Models\Tranche  $tranche
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        Formation::destroy($id);
-        return redirect('admin/formation')->with('flash_message', 'Vous avez supprimé la formation avec success!');
-
+        Tranche::destroy($id);
+        return redirect('admin/tranche')->with('flash_message', 'Vous avez supprimé la tranche avec success!');
     }
 }

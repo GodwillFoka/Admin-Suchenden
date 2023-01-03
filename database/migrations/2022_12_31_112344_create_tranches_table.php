@@ -13,15 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('etudiants', function (Blueprint $table) {
+        Schema::create('tranches', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('nom')->nullable();
-            $table->string('prenom')->nullable();
-            $table->string('age')->nullable();
-            $table->string('formation')->nullable();
+            $table->enum('nom', ['INSCRIPTION','A1','A2','B1','B2','C1']);
+            $table->double('montant')->nullable();
             $table->text('description')->nullable();
-            $table->date('date_debut')->nullable();
         });
     }
 
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('etudiants');
+        Schema::dropIfExists('tranches');
     }
 };

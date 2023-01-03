@@ -14,7 +14,7 @@
                             <li class="breadcrumb-item"><a href="{{ url('/') }}">Accueil</a></li>
                             <li class="breadcrumb-item"><a href="{{ url('/admin/formation') }}">
                                     formation</a></li>
-                            <li class="breadcrumb-item active">Ajouter</li>
+                            <li class="breadcrumb-item active">modifier</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->

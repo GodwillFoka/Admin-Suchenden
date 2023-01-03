@@ -113,8 +113,7 @@ class RentreeController extends Controller
     public function destroy($id)
     {
         Rentree::destroy($id);
-        //return redirect('admin/type-rapports')->with('flash_message', 'typeRapport deleted!');
-        $message = 'Vous avez supprimé le message avec success!';
-        return response()->json($message);
+        return redirect('admin/rentree')->with('flash_message', 'Vous avez supprimé la rentree avec success!');
+
     }
 }

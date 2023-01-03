@@ -7,13 +7,13 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Gestion Des Etudiants</h1>
+                        <h1 class="m-0 text-dark">Gestion Des Tranches</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ url('/') }}">Accueil</a></li>
-                            <li class="breadcrumb-item"><a href="{{ url('/admin/etudiant') }}">Etudiant</a></li>
-                            <li class="breadcrumb-item active">modifier</li>
+                            <li class="breadcrumb-item"><a href="{{ url('/admin/tranche') }}">Tranche</a></li>
+                            <li class="breadcrumb-item active">Ajouter</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -32,9 +32,9 @@
 
                         <div class="col-md-12">
                             <!-- general form elements disabled -->
-                            <div class="card card-warning">
+                            <div class="card card-success">
                                 <div class="card-header">
-                                    <h3 class="card-title">Modifier</h3>
+                                    <h3 class="card-title">Ajouter</h3>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -45,11 +45,11 @@
                                             @endforeach
                                         </ul>
                                     @endif
-                                    <form method="POST" action="{{ url('/admin/etudiant/' . $etudiant->id) }}" accept-charset="UTF-8"
+                                    <form method="POST" action="{{ url('/admin/tranche') }}" accept-charset="UTF-8"
                                         class="form-horizontal" enctype="multipart/form-data">
                                         {{ csrf_field() }}
 
-                                        @include ('admin.etudiant.form', ['formMode' => 'edit'])
+                                        @include('admin.tranche.form', ['formMode' => 'create'])
                                     </form>
                                 </div>
                                 <!-- /.card-body -->

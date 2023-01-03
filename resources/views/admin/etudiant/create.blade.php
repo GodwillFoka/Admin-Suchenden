@@ -7,12 +7,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Gestion Des Rentrees</h1>
+                        <h1 class="m-0 text-dark">Gestion Des Etudiants</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ url('/') }}">Accueil</a></li>
-                            <li class="breadcrumb-item"><a href="{{ url('/admin/rentree') }}">Rentree</a></li>
+                            <li class="breadcrumb-item"><a href="{{ url('/admin/etudiant') }}">Etudiant</a></li>
                             <li class="breadcrumb-item active">Ajouter</li>
                         </ol>
                     </div><!-- /.col -->
@@ -45,11 +45,11 @@
                                             @endforeach
                                         </ul>
                                     @endif
-                                    <form method="POST" action="{{ url('/admin/rentree') }}" accept-charset="UTF-8"
+                                    <form method="POST" action="{{ url('/admin/etudiant') }}" accept-charset="UTF-8"
                                         class="form-horizontal" enctype="multipart/form-data">
                                         {{ csrf_field() }}
 
-                                        @include('admin.rentree.form', ['formMode' => 'create'])
+                                        @include('admin.etudiant.form', ['formMode' => 'create'])
                                     </form>
                                 </div>
                                 <!-- /.card-body -->

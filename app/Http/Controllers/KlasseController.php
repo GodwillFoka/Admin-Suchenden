@@ -111,8 +111,7 @@ class KlasseController extends Controller
     public function destroy($id)
     {
         Klasse::destroy($id);
-        //return redirect('admin/type-rapports')->with('flash_message', 'typeRapport deleted!');
-        $message = 'Vous avez supprimé la klasse avec succès!';
-        return response()->json($message);
+        return redirect('admin/klasse')->with('flash_message', 'Vous avez supprimé la klasse avec success!');
+
     }
 }

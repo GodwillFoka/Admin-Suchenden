@@ -58,12 +58,17 @@
                                                             title="Modifier classe" class="btn btn-primary btn-sm"><i
                                                                 class="fas fa-edit" aria-hidden="true"></i>
                                                             Modifier</a>
-                                                        <button type="submit"
-                                                            class="btn btn-danger btn-sm  deleted_element"
-                                                            title="Delete classe"
-                                                            onclick="return alertDeleteElement({{ $item->id }},'/admin/klasse/' + {{ $item->id }})"><i
-                                                                class="fa fa-trash" aria-hidden="true"></i>
-                                                            Supprimer</button>
+                                                        <form method="POST"
+                                                            action="{{ url('/admin/klasse' . '/' . $item->id) }}"
+                                                            accept-charset="UTF-8" style="display:inline">
+                                                            {{ method_field('DELETE') }}
+                                                            {{ csrf_field() }}
+                                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                                title="Delete klasse"
+                                                                onclick="return confirm(&quot;Confirm delete?&quot;)"><i
+                                                                    class="fa fa-trash" aria-hidden="true"></i>
+                                                                Supprimer</button>
+                                                        </form>
                                                     </td>
                                                 </tr>
                                             @empty

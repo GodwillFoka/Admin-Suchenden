@@ -12,9 +12,19 @@ class EtudiantController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $keyword = $request->get('search');
+        $perPage = 25;
+
+        if (!empty($keyword)) {
+            $etudiant = Etudiant::where('nom', 'LIKE', "%$keyword%")
+                ->orWhere('description', 'LIKE', "%$keyword%")
+                ->latest()->paginate($perPage);
+        } else {
+            $etudiant = Etudiant::latest()->paginate($perPage);
+        }
+        return view('admin.etudiant.show', compact('etudiant'));
     }
 
     /**
@@ -24,7 +34,7 @@ class EtudiantController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.etudiant.create');
     }
 
     /**
@@ -35,7 +45,14 @@ class EtudiantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+			'nom' => 'required'
+		]);
+        $requestData = $request->all();
+
+        Etudiant::create($requestData);
+
+        return redirect('admin/etudiant')->with('message', 'Vous avez ajouté un nouvel étudiant!');
     }
 
     /**
@@ -44,9 +61,11 @@ class EtudiantController extends Controller
      * @param  \App\Models\Etudiant  $etudiant
      * @return \Illuminate\Http\Response
      */
-    public function show(Etudiant $etudiant)
+    public function show(Etudiant $id)
     {
-        //
+        $etudiant = Etudiant::findOrFail($id);
+
+        return view('admin.etudiant.show', compact('$etudiant'));
     }
 
     /**
@@ -55,9 +74,11 @@ class EtudiantController extends Controller
      * @param  \App\Models\Etudiant  $etudiant
      * @return \Illuminate\Http\Response
      */
-    public function edit(Etudiant $etudiant)
+    public function edit($id)
     {
-        //
+        $etudiant = Etudiant::findOrFail($id);
+
+        return view('admin.etudiant.edit', compact('etudiant'));
     }
 
     /**
@@ -67,9 +88,18 @@ class EtudiantController extends Controller
      * @param  \App\Models\Etudiant  $etudiant
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Etudiant $etudiant)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+			'nom' => 'required',
+			'description' => 'required'
+		]);
+        $requestData = $request->all();
+
+        $etudiant = Etudiant::findOrFail($id);
+        $etudiant->update($requestData);
+
+        return redirect('admin/formation')->with('message', 'Vous avez modifié les information d\'un tudiant avec success!');
     }
 
     /**
@@ -78,8 +108,10 @@ class EtudiantController extends Controller
      * @param  \App\Models\Etudiant  $etudiant
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Etudiant $etudiant)
+    public function destroy($id)
     {
-        //
+        Etudiant::destroy($id);
+        return redirect('admin/etudiant')->with('flash_message', 'Vous avez supprimé un etudiant avec success!');
+
     }
 }

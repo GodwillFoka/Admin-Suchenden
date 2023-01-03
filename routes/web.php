@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\FormationController;
 use App\Http\Controllers\KlasseController;
 use App\Http\Controllers\RentreeController;
+use App\Http\Controllers\TrancheController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,12 +34,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/', [RentreeController::class, 'store'])->name('store');
     });
     Route::prefix('etudiant')->name('etudiant.')->group(function () {
-        Route::get('/', [RentreeController::class, 'index'])->name('index');
-        Route::get('/create', [RentreeController::class, 'create'])->name('create');
-        Route::get('/{etudiant}/edit', [RentreeController::class, 'edit'])->name('edit');
-        Route::post('/{etudiant}', [RentreeController::class, 'update'])->name('update');
-        Route::delete('/{etudiant}', [RentreeController::class, 'destroy'])->name('delete');
-        Route::post('/', [RentreeController::class, 'store'])->name('store');
+        Route::get('/', [EtudiantController::class, 'index'])->name('index');
+        Route::get('/create', [EtudiantController::class, 'create'])->name('create');
+        Route::get('/{etudiant}/edit', [EtudiantController::class, 'edit'])->name('edit');
+        Route::post('/{etudiant}', [EtudiantController::class, 'update'])->name('update');
+        Route::delete('/{etudiant}', [EtudiantController::class, 'destroy'])->name('delete');
+        Route::post('/', [EtudiantController::class, 'store'])->name('store');
     });
 
     Route::prefix('klasse')->name('klasse.')->group(function () {
@@ -56,5 +58,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/{formation}', [FormationController::class, 'update'])->name('update');
         Route::delete('/{formation}', [FormationController::class, 'destroy'])->name('delete');
         Route::post('/', [FormationController::class, 'store'])->name('store');
+    });
+
+    Route::prefix('tranche')->name('tranche.')->group(function () {
+        Route::get('/', [TrancheController::class, 'index'])->name('index');
+        Route::get('/create', [TrancheController::class, 'create'])->name('create');
+        Route::get('/{tranche}/edit', [TrancheController::class, 'edit'])->name('edit');
+        Route::post('/{tranche}', [TrancheController::class, 'update'])->name('update');
+        Route::delete('/{tranche}', [TrancheController::class, 'destroy'])->name('delete');
+        Route::post('/', [TrancheController::class, 'store'])->name('store');
     });
 });

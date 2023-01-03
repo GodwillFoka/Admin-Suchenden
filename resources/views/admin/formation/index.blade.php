@@ -33,8 +33,8 @@
                                 <h3 class="card-title">Les plus récentes</h3>
 
                                 <div class="card-tools">
-                                    <a href="{{ url('admin/formation/create') }}" class="btn btn-sm btn-success float-left"><i
-                                            class="fa fa-plus"></i> Ajouter</a>
+                                    <a href="{{ url('admin/formation/create') }}"
+                                        class="btn btn-sm btn-success float-left"><i class="fa fa-plus"></i> Ajouter</a>
                                 </div>
                             </div>
                             <!-- /.card-header -->
@@ -58,18 +58,24 @@
                                                             title="Modifier formation" class="btn btn-primary btn-sm"><i
                                                                 class="fas fa-edit" aria-hidden="true"></i>
                                                             Modifier</a>
-                                                        <button type="submit"
-                                                            class="btn btn-danger btn-sm  deleted_element"
-                                                            title="Delete formation"
-                                                            onclick="return alertDeleteElement({{ $item->id }},'/admin/formation/' + {{ $item->id }})"><i
-                                                                class="fa fa-trash" aria-hidden="true"></i>
-                                                            Supprimer</button>
+                                                        <form method="POST"
+                                                            action="{{ url('/admin/formation' . '/' . $item->id) }}"
+                                                            accept-charset="UTF-8" style="display:inline">
+                                                            {{ method_field('DELETE') }}
+                                                            {{ csrf_field() }}
+                                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                                title="Delete formation"
+                                                                onclick="return confirm(&quot;Confirm delete?&quot;)"><i
+                                                                    class="fa fa-trash" aria-hidden="true"></i>
+                                                                Supprimer</button>
+                                                        </form>
                                                     </td>
                                                 </tr>
                                             @empty
                                                 <tr>
                                                     <td colspan="3">
-                                                        <div class="text-center">Nous n'avons aucune formation enregistré pour
+                                                        <div class="text-center">Nous n'avons aucune formation enregistré
+                                                            pour
                                                             le moment veillez en créer une!</div>
                                                     </td>
                                                 </tr>

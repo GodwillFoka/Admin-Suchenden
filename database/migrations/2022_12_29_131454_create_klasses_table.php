@@ -18,6 +18,8 @@ return new class extends Migration
             $table->timestamps();
             $table->string('nom')->nullable();
             $table->text('description')->nullable();
+            $table->unsignedBigInteger('rentree_id')->unique()->unsigned();
+            $table->foreign('rentree_id')->references('id')->on('rentrees')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
