@@ -2,7 +2,7 @@
     <div class="col-md-6 requiredform-group {{ $errors->has('nom') ? 'has-error' : '' }}">
         <label for="nom" class="control-label">{{ 'Niveau' }} <span class="text-red">*</span></label>
         <select required name="nom" class="form-control">
-            <option selected disabled>Veuillez selectionner une rentrée</option>
+            <option selected disabled>Veuillez selectionner un Niveau</option>
             <option {{ isset($tranche->nom) && $tranche->nom == 'INSCRIPTION' ? 'selected' : '' }} value="INSCRIPTION">
                 INSCRIPTION</option>
             <option {{ isset($tranche->nom) && $tranche->nom == 'A1' ? 'selected' : '' }} value="A1">

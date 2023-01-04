@@ -38,6 +38,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/create', [EtudiantController::class, 'create'])->name('create');
         Route::get('/{etudiant}/edit', [EtudiantController::class, 'edit'])->name('edit');
         Route::post('/{etudiant}', [EtudiantController::class, 'update'])->name('update');
+        Route::get('/{etudiant}', [EtudiantController::class, 'show'])->name('show');
         Route::delete('/{etudiant}', [EtudiantController::class, 'destroy'])->name('delete');
         Route::post('/', [EtudiantController::class, 'store'])->name('store');
     });

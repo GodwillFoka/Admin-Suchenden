@@ -23,9 +23,9 @@ class EtudiantController extends Controller
         if (!empty($keyword)) {
             $etudiant = Etudiant::where('nom', 'LIKE', "%$keyword%")
                 ->orWhere('description', 'LIKE', "%$keyword%")
-                ->latest()->with('classe')->with('formation')->with('tranche')->paginate($perPage);
+                ->latest()->with('classe')->with('formation')->paginate($perPage);
         } else {
-            $etudiant = Etudiant::latest()->with('classe')->with('formation')->with('tranche')->paginate($perPage);
+            $etudiant = Etudiant::latest()->with('classe')->with('formation')->paginate($perPage);
         }
         return view('admin.etudiant.index', compact('etudiant'));
     }
@@ -39,8 +39,7 @@ class EtudiantController extends Controller
     {
         $classe = Klasse::all();
         $formation = Formation::all();
-        $tranche = Tranche::all();
-        return view('admin.etudiant.create', compact('classe','formation','tranche'));
+        return view('admin.etudiant.create', compact('classe', 'formation'));
     }
 
     /**
@@ -59,7 +58,6 @@ class EtudiantController extends Controller
             'photo' => 'required',
             'contact_parent' => 'required',
             'niveau' => 'required',
-            'statut' => 'required',
             'nom_parent' => 'required',
             'ville_provenance' => 'required',
             'niveau_etude' => 'required',
@@ -68,7 +66,6 @@ class EtudiantController extends Controller
             'description' => 'required',
             'formation_professionnelle' => 'required',
             'formation_id' => 'required|exists:formations,id',
-            'tranche_id' => 'required|exists:tranches,id',
             'classe_id' => 'required|exists:klasses,id'
         ]);
         $requestData = $request->all();
@@ -88,11 +85,15 @@ class EtudiantController extends Controller
      * @param  \App\Models\Etudiant  $etudiant
      * @return \Illuminate\Http\Response
      */
-    public function show(Etudiant $id)
+    public function show($id)
     {
-        $etudiant = Etudiant::findOrFail($id)->with('classe')->with('formation')->with('tranche');
+        // $etudiant = Etudiant::findOrFail($id)->with('classe')->with('formation');
 
-        return view('admin.etudiant.show', compact('$etudiant','classe','formation','tranche'));
+        // return view('admin.etudiant.show', compact('$etudiant','classe','formation'));
+        $etudiant = Etudiant::findOrFail($id);
+        $classe = Klasse::all();
+        $formation = Formation::all();
+        return view('admin.etudiant.show', compact('etudiant', 'classe', 'formation'));
     }
 
     /**
@@ -106,8 +107,7 @@ class EtudiantController extends Controller
         $etudiant = Etudiant::findOrFail($id);
         $classe = Klasse::all();
         $formation = Formation::all();
-        $tranche = Tranche::all();
-        return view('admin.etudiant.edit', compact('etudiant','classe','formation','tranche'));
+        return view('admin.etudiant.edit', compact('etudiant', 'classe', 'formation'));
     }
 
     /**
@@ -134,7 +134,6 @@ class EtudiantController extends Controller
             'description' => 'required',
             'formation_professionnelle' => 'required',
             'formation_id' => 'required|exists:formations,id',
-            'tranche_id' => 'required|exists:tranches,id',
             'classe_id' => 'required|exists:klasses,id'
         ]);
         $requestData = $request->all();
@@ -145,7 +144,7 @@ class EtudiantController extends Controller
         $etudiant = Etudiant::findOrFail($id);
         $etudiant->update($requestData);
 
-        return redirect('admin/formation')->with('message', 'Vous avez modifié les information d\'un tudiant avec success!');
+        return redirect('admin/etudiant')->with('message', 'Vous avez modifié les information d\'un tudiant avec success!');
     }
 
     /**

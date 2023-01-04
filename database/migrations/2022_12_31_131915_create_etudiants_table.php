@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('contact_parent')->nullable();
             $table->string('nom_parent')->nullable();
             $table->string('ville_provenance')->nullable();
-            $table->enum('statut', ['en_regle','non_en_regle']);
+            $table->enum('statut', ['en_regle','en_cours','non_en_regle']);
             $table->enum('niveau', ['A1','A2','B1','B2','C1']);
             $table->string('niveau_etude')->nullable();
             $table->enum('sexe', ['Masculin','Feminin']);
@@ -33,10 +33,8 @@ return new class extends Migration
             $table->string('formation_scolaire')->nullable();
             $table->string('formation_professionnelle')->nullable();
             $table->unsignedBigInteger('formation_id')->unique()->unsigned();
-            $table->unsignedBigInteger('tranche_id')->unique()->unsigned();
             $table->unsignedBigInteger('classe_id')->unique()->unsigned();
             $table->foreign('formation_id')->references('id')->on('formations')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('tranche_id')->references('id')->on('tranches')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('classe_id')->references('id')->on('klasses')->onDelete('cascade')->onUpdate('cascade');
         });
     }
