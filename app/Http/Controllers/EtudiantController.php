@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
+use App\Models\Formation;
+use App\Models\Klasse;
+use App\Models\Tranche;
 use Illuminate\Http\Request;
 
 class EtudiantController extends Controller
@@ -20,11 +23,11 @@ class EtudiantController extends Controller
         if (!empty($keyword)) {
             $etudiant = Etudiant::where('nom', 'LIKE', "%$keyword%")
                 ->orWhere('description', 'LIKE', "%$keyword%")
-                ->latest()->paginate($perPage);
+                ->latest()->with('classe')->with('formation')->with('tranche')->paginate($perPage);
         } else {
-            $etudiant = Etudiant::latest()->paginate($perPage);
+            $etudiant = Etudiant::latest()->with('classe')->with('formation')->with('tranche')->paginate($perPage);
         }
-        return view('admin.etudiant.show', compact('etudiant'));
+        return view('admin.etudiant.index', compact('etudiant'));
     }
 
     /**
@@ -34,7 +37,10 @@ class EtudiantController extends Controller
      */
     public function create()
     {
-        return view('admin.etudiant.create');
+        $classe = Klasse::all();
+        $formation = Formation::all();
+        $tranche = Tranche::all();
+        return view('admin.etudiant.create', compact('classe','formation','tranche'));
     }
 
     /**
@@ -46,9 +52,30 @@ class EtudiantController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-			'nom' => 'required'
-		]);
+            'nom' => 'required',
+            'prenom' => 'required',
+            'ville' => 'required',
+            'telephone' => 'required',
+            'photo' => 'required',
+            'contact_parent' => 'required',
+            'niveau' => 'required',
+            'statut' => 'required',
+            'nom_parent' => 'required',
+            'ville_provenance' => 'required',
+            'niveau_etude' => 'required',
+            'sexe' => 'required',
+            'age' => 'required',
+            'description' => 'required',
+            'formation_professionnelle' => 'required',
+            'formation_id' => 'required|exists:formations,id',
+            'tranche_id' => 'required|exists:tranches,id',
+            'classe_id' => 'required|exists:klasses,id'
+        ]);
         $requestData = $request->all();
+        if ($request->hasFile('photo')) {
+            $requestData['photo'] = $request->file('photo')
+                ->store('uploads', 'public');
+        }
 
         Etudiant::create($requestData);
 
@@ -63,9 +90,9 @@ class EtudiantController extends Controller
      */
     public function show(Etudiant $id)
     {
-        $etudiant = Etudiant::findOrFail($id);
+        $etudiant = Etudiant::findOrFail($id)->with('classe')->with('formation')->with('tranche');
 
-        return view('admin.etudiant.show', compact('$etudiant'));
+        return view('admin.etudiant.show', compact('$etudiant','classe','formation','tranche'));
     }
 
     /**
@@ -77,8 +104,10 @@ class EtudiantController extends Controller
     public function edit($id)
     {
         $etudiant = Etudiant::findOrFail($id);
-
-        return view('admin.etudiant.edit', compact('etudiant'));
+        $classe = Klasse::all();
+        $formation = Formation::all();
+        $tranche = Tranche::all();
+        return view('admin.etudiant.edit', compact('etudiant','classe','formation','tranche'));
     }
 
     /**
@@ -91,11 +120,28 @@ class EtudiantController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-			'nom' => 'required',
-			'description' => 'required'
-		]);
+            'nom' => 'required',
+            'prenom' => 'required',
+            'ville' => 'required',
+            'telephone' => 'required',
+            'photo' => 'required',
+            'contact_parent' => 'required',
+            'nom_parent' => 'required',
+            'ville_provenance' => 'required',
+            'niveau_etude' => 'required',
+            'sexe' => 'required',
+            'age' => 'required',
+            'description' => 'required',
+            'formation_professionnelle' => 'required',
+            'formation_id' => 'required|exists:formations,id',
+            'tranche_id' => 'required|exists:tranches,id',
+            'classe_id' => 'required|exists:klasses,id'
+        ]);
         $requestData = $request->all();
-
+        if ($request->hasFile('photo')) {
+            $requestData['photo'] = $request->file('photo')
+                ->store('uploads', 'public');
+        }
         $etudiant = Etudiant::findOrFail($id);
         $etudiant->update($requestData);
 
@@ -112,6 +158,5 @@ class EtudiantController extends Controller
     {
         Etudiant::destroy($id);
         return redirect('admin/etudiant')->with('flash_message', 'Vous avez supprimé un etudiant avec success!');
-
     }
 }

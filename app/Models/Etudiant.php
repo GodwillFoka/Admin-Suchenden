@@ -23,7 +23,7 @@ class Etudiant extends Model
      *
      * @var array
      */
-    protected $fillable = ['nom', 'prenom', 'ville', 'telephone', 'photo', 'contact_parent', 'nom_parent', 'ville_provenance', 'niveau_etude', 'sexe', 'age', 'description', 'formation_professionnelle', 'formation_id', 'tranche_id', 'classe_id'];
+    protected $fillable = ['nom', 'prenom', 'ville', 'niveau', 'statut', 'telephone', 'photo', 'contact_parent', 'nom_parent', 'ville_provenance', 'niveau_etude', 'sexe', 'age', 'description', 'formation_professionnelle', 'formation_id', 'tranche_id', 'classe_id'];
 
     public function classe()
     {
@@ -35,6 +35,6 @@ class Etudiant extends Model
     }
     public function formation()
     {
-        return $this->belongsTo('App\Models\Klasse', 'formation_id');
+        return $this->belongsTo('App\Models\Formation', 'formation_id');
     }
 }

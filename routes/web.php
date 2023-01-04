@@ -42,7 +42,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/', [EtudiantController::class, 'store'])->name('store');
     });
 
-    Route::prefix('klasse')->name('klasse.')->group(function () {
+    Route::prefix('klasse')->name('klasse')->group(function () {
         Route::get('/', [KlasseController::class, 'index'])->name('index');
         Route::get('/create', [KlasseController::class, 'create'])->name('create');
         Route::get('/{klasse}/edit', [KlasseController::class, 'edit'])->name('edit');

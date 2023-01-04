@@ -44,6 +44,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Nom</th>
+                                                <th>Rentree</th>
                                                 <th>Description</th>
                                                 <th>Action</th>
                                             </tr>
@@ -52,6 +53,7 @@
                                             @forelse ($klasse as $item)
                                                 <tr>
                                                     <td>{{ $item->nom }}</td>
+                                                    <td>{{ $item->rentree->nom }}</td>
                                                     <td>{{ $item->description }}</td>
                                                     <td>
                                                         <a href="{{ url('/admin/klasse/' . $item->id . '/edit') }}"

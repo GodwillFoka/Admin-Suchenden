@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Klasse;
+use App\Models\Rentree;
 use Illuminate\Http\Request;
 
 class KlasseController extends Controller
@@ -19,10 +20,10 @@ class KlasseController extends Controller
 
         if (!empty($keyword)) {
             $klasse = Klasse::where('nom', 'LIKE', "%$keyword%")
-                ->orWhere('description', 'LIKE', "%$keyword%")
+                ->orWhere('description', 'LIKE', "%$keyword%")->with('rentree')
                 ->latest()->paginate($perPage);
         } else {
-            $klasse = Klasse::latest()->paginate($perPage);
+            $klasse = Klasse::latest()->with('rentree')->paginate($perPage);
         }
         return view('admin.klasse.index', compact('klasse'));
     }
@@ -34,7 +35,8 @@ class KlasseController extends Controller
      */
     public function create()
     {
-        return view('admin.klasse.create');
+        $rentree = Rentree::all();
+        return view('admin.klasse.create', compact('rentree'));
     }
 
     /**
@@ -46,7 +48,8 @@ class KlasseController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-			'nom' => 'required'
+			'nom' => 'required',
+            'rentree_id' => 'required|exists:rentrees,id',
 		]);
         $requestData = $request->all();
 
@@ -63,7 +66,7 @@ class KlasseController extends Controller
      */
     public function show(Klasse $id)
     {
-        $klasse = Klasse::findOrFail($id);
+        $klasse = Klasse::findOrFail($id)->with('rentree');
 
         return view('admin.klasse.show', compact('klasse'));
     }
@@ -76,9 +79,10 @@ class KlasseController extends Controller
      */
     public function edit($id)
     {
+        $rentree = Rentree::all();
         $klasse = Klasse::findOrFail($id);
 
-        return view('admin.klasse.edit', compact('klasse'));
+        return view('admin.klasse.edit', compact('klasse','rentree'));
     }
 
     /**
